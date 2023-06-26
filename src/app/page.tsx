@@ -1,5 +1,7 @@
 "use client"
 
+import { useRef } from 'react'
+import Script from 'next/script'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react'
@@ -10,11 +12,12 @@ import ReactTwitchEmbedVideo from 'react-twitch-embed-video'
 
 const inter = Inter({ subsets: ['latin'] })
 
-
 export default function Home(props: any) {
   const [playlist, setPlaylist] = useState<Video[]>([])
   const [nowPlaying, setNowPlaying] = useState<Video>({
     id: '1588392326',
+    title: '',
+    duration: '',
     timestamp: '0h0m00s'
   })
 
@@ -29,20 +32,36 @@ export default function Home(props: any) {
     console.log('id',id)
   }
 
+  function pause(){
+  }
+
+
   function pronto(){
     console.log('opa')
   }
 
   useEffect(() => {
     getSongs()
-    console.log(playlist)
-    console.log(nowPlaying)
   }, [])
+
 
   return (
     <main className='flex h-screen w-full p-4'>
       <div className="player w-[70%] h-full">
         <div className="video h-full">
+          {/* <Script 
+            src="https://embed.twitch.tv/embed/v1.js" 
+            onReady={() => {
+                embedRef.current = new Twitch.Embed("twitch-embed", {
+                width: 800,
+                height: 800,
+                collection: 'wFaDfmriExdmVA',
+                parent: ['localhost']
+              })
+            }}
+            />
+            <div id="twitch-embed"></div>
+            <button onClick={() => embedRef.pause()}>pause</button> */}
           <ReactTwitchEmbedVideo 
             onReady={pronto} 
             width="640"
@@ -63,8 +82,8 @@ export default function Home(props: any) {
         </div>
       </div>
       <div>
-        <Playlist playlist={playlist} playSong={setNowPlaying}/>
-        </div>
+          <Playlist playlist={playlist} playSong={setNowPlaying}/>
+      </div>
     </main>  
   )
 }

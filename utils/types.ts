@@ -4,7 +4,7 @@ export interface Video {
     user_id?:        string;
     user_login?:     string;
     user_name?:      string;
-    title?:          string;
+    title:          string;
     description?:    string;
     created_at?:     string;
     published_at?:   string;
@@ -14,7 +14,7 @@ export interface Video {
     view_count?:     number;
     language?:       string;
     type?:           string;
-    duration?:       string;
+    duration:       string;
     muted_segments?: null;
     timestamp?: string;
 }
