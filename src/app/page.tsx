@@ -7,7 +7,8 @@ import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react'
 import { Video } from '../../utils/types'
 import Playlist from '@/components/playlist'
-import ReactTwitchEmbedVideo from 'react-twitch-embed-video'
+// import ReactTwitchEmbedVideo from 'react-twitch-embed-video'
+import { TwitchEmbed } from 'react-twitch-embed'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -36,7 +37,7 @@ export default function Home(props: any) {
   }
 
 
-  function pronto(){
+  function nextSong(){
     console.log('opa')
   }
 
@@ -47,7 +48,7 @@ export default function Home(props: any) {
 
   return (
     <main className='flex h-screen w-full p-4'>
-      <div className="player w-[70%] h-full">
+      <div className="player w-[65%] h-full">
         <div className="video h-full">
           {/* <Script 
             src="https://embed.twitch.tv/embed/v1.js" 
@@ -62,12 +63,13 @@ export default function Home(props: any) {
             />
             <div id="twitch-embed"></div>
             <button onClick={() => embedRef.pause()}>pause</button> */}
-          <ReactTwitchEmbedVideo 
-            onReady={pronto} 
-            width="640"
-            height="360"
+          <TwitchEmbed 
+            onEnded={nextSong} 
+            width="100%"
+            height="100%"
             time={nowPlaying.timestamp}
             video={nowPlaying.id}
+            hideControls
             // collection={{
             //   video: nowPlaying.id, 
             //   collection: "wFaDfmriExdmVA"
@@ -81,7 +83,7 @@ export default function Home(props: any) {
           ></iframe> */}
         </div>
       </div>
-      <div>
+      <div className='w-[35%]'>
           <Playlist playlist={playlist} playSong={setNowPlaying}/>
       </div>
     </main>  
