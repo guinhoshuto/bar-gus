@@ -29,17 +29,33 @@ export default function Home(props: any) {
     // setNowPlaying(playlist[0])
   }
 
+  let player: any
+
   function playSong(id: string){
     console.log('id',id)
+    if(!window.Twitch) return
+    player = new window.Twitch.Player("twitch-embed", {
+    width: 800,
+    height: 800,
+    video: nowPlaying.id,
+    parent: ['localhost']
+    });
   }
 
   function pause(){
+    player.pause()
   }
 
 
   function nextSong(){
     console.log('opa')
   }
+
+  useEffect(() => {
+    playSong('aaa')
+    // if(!window.Twitch) return
+    // window.player.play()
+  }, [nowPlaying])
 
   useEffect(() => {
     getSongs()
@@ -50,20 +66,21 @@ export default function Home(props: any) {
     <main className='flex h-screen w-full p-4'>
       <div className="player w-[65%] h-full">
         <div className="video h-full">
-          {/* <Script 
+          <Script 
             src="https://embed.twitch.tv/embed/v1.js" 
-            onReady={() => {
-                embedRef.current = new Twitch.Embed("twitch-embed", {
-                width: 800,
-                height: 800,
-                collection: 'wFaDfmriExdmVA',
-                parent: ['localhost']
-              })
-            }}
+            // onReady={() => {
+            //     if(!window.Twitch) return
+            //     window.player = new Twitch.Embed("twitch-embed", {
+            //     width: 800,
+            //     height: 800,
+            //     video: nowPlaying.id,
+            //     parent: ['localhost']
+            //   })
+            // }}
             />
             <div id="twitch-embed"></div>
-            <button onClick={() => embedRef.pause()}>pause</button> */}
-          <TwitchEmbed 
+            {/* <button onClick={() => embedRef.pause()}>pause</button> */}
+          {/* <TwitchEmbed 
             onEnded={nextSong} 
             width="100%"
             height="100%"
@@ -74,7 +91,7 @@ export default function Home(props: any) {
             //   video: nowPlaying.id, 
             //   collection: "wFaDfmriExdmVA"
             // }}
-            />
+            /> */}
           {/* <iframe 
             src={`https://player.twitch.tv/?video=${nowPlaying.id}&parent=localhost`} 
             height='100%'
@@ -85,6 +102,7 @@ export default function Home(props: any) {
       </div>
       <div className='w-[35%]'>
           <Playlist playlist={playlist} playSong={setNowPlaying}/>
+          <button onClick={pause}>PAUSE</button>  
       </div>
     </main>  
   )
