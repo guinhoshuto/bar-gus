@@ -22,6 +22,8 @@ export default function Home(props: any) {
     timestamp: '0h0m00s'
   })
 
+  let player
+
   async function getSongs(){
     const res = await fetch('/api/songs')
     const json = await res.json()
@@ -29,17 +31,10 @@ export default function Home(props: any) {
     // setNowPlaying(playlist[0])
   }
 
-  let player: any
 
   function playSong(id: string){
+    player.setVideo(nowPlaying.id)
     console.log('id',id)
-    if(!window.Twitch) return
-    player = new window.Twitch.Player("twitch-embed", {
-    width: 800,
-    height: 800,
-    video: nowPlaying.id,
-    parent: ['localhost']
-    });
   }
 
   function pause(){
@@ -52,8 +47,8 @@ export default function Home(props: any) {
   }
 
   useEffect(() => {
-    playSong('aaa')
-    // if(!window.Twitch) return
+    if(!window.Twitch) return
+    playSong(nowPlaying.id)
     // window.player.play()
   }, [nowPlaying])
 
@@ -64,19 +59,26 @@ export default function Home(props: any) {
 
   return (
     <main className='flex h-screen w-full p-4'>
+      {/* {    if
+      player = new window.Twitch.Player("twitch-embed", {
+        width: 800,
+        height: 800,
+        video: nowPlaying.id,
+        parent: ['localhost']
+      });} */}
       <div className="player w-[65%] h-full">
         <div className="video h-full">
           <Script 
             src="https://embed.twitch.tv/embed/v1.js" 
-            // onReady={() => {
-            //     if(!window.Twitch) return
-            //     window.player = new Twitch.Embed("twitch-embed", {
-            //     width: 800,
-            //     height: 800,
-            //     video: nowPlaying.id,
-            //     parent: ['localhost']
-            //   })
-            // }}
+            onReady={() => {
+                if(!window.Twitch) return
+                player = new Twitch.Player("twitch-embed", {
+                width: 800,
+                height: 800,
+                video: nowPlaying.id,
+                parent: ['localhost']
+              })
+            }}
             />
             <div id="twitch-embed"></div>
             {/* <button onClick={() => embedRef.pause()}>pause</button> */}
