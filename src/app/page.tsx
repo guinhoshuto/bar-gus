@@ -22,7 +22,6 @@ export default function Home(props: any) {
     timestamp: '0h0m00s'
   })
 
-  let player
 
   async function getSongs(){
     const res = await fetch('/api/songs')
@@ -31,14 +30,16 @@ export default function Home(props: any) {
     // setNowPlaying(playlist[0])
   }
 
+  const playerRef = useRef<any>()
+
 
   function playSong(id: string){
-    player.setVideo(nowPlaying.id)
+    playerRef.current.setVideo(nowPlaying.id)
     console.log('id',id)
   }
 
   function pause(){
-    player.pause()
+    playerRef.current.pause()
   }
 
 
@@ -59,20 +60,13 @@ export default function Home(props: any) {
 
   return (
     <main className='flex h-screen w-full p-4'>
-      {/* {    if
-      player = new window.Twitch.Player("twitch-embed", {
-        width: 800,
-        height: 800,
-        video: nowPlaying.id,
-        parent: ['localhost']
-      });} */}
       <div className="player w-[65%] h-full">
         <div className="video h-full">
           <Script 
             src="https://embed.twitch.tv/embed/v1.js" 
-            onReady={() => {
+            onLoad={() => {
                 if(!window.Twitch) return
-                player = new Twitch.Player("twitch-embed", {
+                playerRef.current = new window.Twitch.Player("twitch-embed", {
                 width: 800,
                 height: 800,
                 video: nowPlaying.id,
