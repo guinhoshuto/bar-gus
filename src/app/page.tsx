@@ -1,14 +1,12 @@
-"use client"
+'use client'
 
-import { useRef } from 'react'
 import Script from 'next/script'
 import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import { useEffect, useState } from 'react'
 import { Video } from '../../utils/types'
 import Playlist from '@/components/playlist'
-// import ReactTwitchEmbedVideo from 'react-twitch-embed-video'
-import { TwitchEmbed } from 'react-twitch-embed'
+import Player from '@/components/player'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -30,28 +28,6 @@ export default function Home(props: any) {
     // setNowPlaying(playlist[0])
   }
 
-  const playerRef = useRef<any>()
-
-
-  function playSong(id: string){
-    playerRef.current.setVideo(nowPlaying.id)
-    console.log('id',id)
-  }
-
-  function pause(){
-    playerRef.current.pause()
-  }
-
-
-  function nextSong(){
-    console.log('opa')
-  }
-
-  useEffect(() => {
-    if(!window.Twitch) return
-    playSong(nowPlaying.id)
-    // window.player.play()
-  }, [nowPlaying])
 
   useEffect(() => {
     getSongs()
@@ -61,44 +37,10 @@ export default function Home(props: any) {
   return (
     <main className='flex h-screen w-full p-4'>
       <div className="player w-[65%] h-full">
-        <div className="video h-full">
-          <Script 
-            src="https://embed.twitch.tv/embed/v1.js" 
-            onLoad={() => {
-                if(!window.Twitch) return
-                playerRef.current = new window.Twitch.Player("twitch-embed", {
-                width: 800,
-                height: 800,
-                video: nowPlaying.id,
-                parent: ['localhost']
-              })
-            }}
-            />
-            <div id="twitch-embed"></div>
-            {/* <button onClick={() => embedRef.pause()}>pause</button> */}
-          {/* <TwitchEmbed 
-            onEnded={nextSong} 
-            width="100%"
-            height="100%"
-            time={nowPlaying.timestamp}
-            video={nowPlaying.id}
-            hideControls
-            // collection={{
-            //   video: nowPlaying.id, 
-            //   collection: "wFaDfmriExdmVA"
-            // }}
-            /> */}
-          {/* <iframe 
-            src={`https://player.twitch.tv/?video=${nowPlaying.id}&parent=localhost`} 
-            height='100%'
-            width='100%'
-            allowFullScreen
-          ></iframe> */}
-        </div>
+        <Player video={nowPlaying} />
       </div>
       <div className='w-[35%]'>
           <Playlist playlist={playlist} playSong={setNowPlaying}/>
-          <button onClick={pause}>PAUSE</button>  
       </div>
     </main>  
   )
