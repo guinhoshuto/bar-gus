@@ -22,7 +22,7 @@ export default function Home(props: any) {
 
 
   async function getSongs(){
-    const res = await fetch('api/songs')
+    const res = await fetch('/api/songs')
     const json = await res.json()
     setPlaylist(json.data)
     // setNowPlaying(playlist[0])
